@@ -60,19 +60,35 @@ body {
 }
 
 #clear-canvas {
-    width: 15px;
-    height: 15px;
-    background: red;
+    width: 20px;
+    height: 20px;
+    background: black;
     border: none;
     border-radius: 50%;
+    box-sizing: border-box;
     cursor: pointer;
     outline: none;
-    box-shadow: 0 0 5px 3px rgba(255, 0, 0, 0.5);
     pointer-events: auto;
-    display: block;
-    margin-top: 15px; /* Controls the gap between slider and button */
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    padding: 0;
+    transition: transform 0.2s ease-in-out;
 }
+
+#clear-canvas i {
+    color: white;
+    font-size: 12px;
+    transition: transform 0.2s ease-in-out;
+}
+
+#clear-canvas:hover i {
+    transform: rotate(360deg);
+    color: #fff;
+}
+
+
 
 
 .character {
@@ -107,31 +123,34 @@ body {
     }
 
     /* Clear Canvas Button */
-   #clear-canvas {
+   /* Mobile Styles for Clear Canvas Button */
+#clear-canvas {
     width: 20px;
     height: 20px;
-    background: red;
+    background: black;
     border: none;
     border-radius: 50%;
     box-sizing: border-box;
     cursor: pointer;
     outline: none;
-    box-shadow: 0 0 5px 3px rgba(255, 0, 0, 0.5);
     pointer-events: auto;
-    display: block;
-    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0;
+    margin-top: 15px; /* Space between slider and button */
+    margin-left: 0; /* Ensure centered alignment */
+    transition: transform 0.2s ease-in-out;
 }
 
-    /* Custom Cursor */
-    #custom-cursor {
-        width: 15px;
-        height: 15px;
-        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Character Styling */
-    .character {
-        font-size: 32px; /* Slightly smaller font size for mobile */
-    }
+#clear-canvas i {
+    color: white;
+    font-size: 12px;
+    transition: transform 0.2s ease-in-out;
 }
+
+#clear-canvas:hover i {
+    transform: rotate(360deg);
+    color: #fff;
+}
+
