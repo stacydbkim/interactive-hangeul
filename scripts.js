@@ -86,22 +86,51 @@ document.addEventListener('mousemove', (event) => {
     createCharacter(event.pageX, event.pageY);
 });
 
-// Touch Events (Mobile)
+// Variables to track touch position
+let startX = 0;
+let startY = 0;
+const tapThreshold = 10; // Maximum movement to be considered a tap
+
+// Mobile: Touch Start
 document.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
-    targetX = touch.pageX;
-    targetY = touch.pageY;
-    createCharacter(touch.pageX, touch.pageY);
+    startX = touch.pageX;
+    startY = touch.pageY;
 });
+
+// Mobile: Touch Move (for dragging)
 document.addEventListener('touchmove', (event) => {
     const touch = event.touches[0];
-    targetX = touch.pageX;
-    targetY = touch.pageY;
-    createCharacter(touch.pageX, touch.pageY);
+    const moveX = touch.pageX;
+    const moveY = touch.pageY;
+
+    // Calculate the distance moved
+    const distanceX = Math.abs(moveX - startX);
+    const distanceY = Math.abs(moveY - startY);
+
+    // If the movement is significant, consider it a drag
+    if (distanceX > tapThreshold || distanceY > tapThreshold) {
+        targetX = moveX;
+        targetY = moveY;
+        createCharacter(moveX, moveY);
+    }
 });
-document.addEventListener('touchend', () => {
-    // Optionally clear cursor or add end-of-touch animation
+
+// Mobile: Touch End (to detect tap)
+document.addEventListener('touchend', (event) => {
+    // Calculate the total distance moved
+    const touch = event.changedTouches[0];
+    const endX = touch.pageX;
+    const endY = touch.pageY;
+    const distanceX = Math.abs(endX - startX);
+    const distanceY = Math.abs(endY - startY);
+
+    // If the movement was small, consider it a tap
+    if (distanceX < tapThreshold && distanceY < tapThreshold) {
+        createHeart(endX, endY);
+    }
 });
+
 
 // Clear canvas when the red button is clicked
 const clearButton = document.getElementById('clear-canvas');
