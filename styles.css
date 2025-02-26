@@ -33,7 +33,7 @@ body {
 #control-panel {
     position: fixed;
     top: 10px;
-    left: 10px;
+    left: 20px;
     background: rgba(0, 0, 0, 0);
     padding: 10px;
     border-radius: 8px;
@@ -62,7 +62,13 @@ body {
     cursor: pointer;
     outline: none;
     box-shadow: 0 0 5px 3px rgba(255, 0, 0, 0.5);
+    padding: 0;
+    -webkit-appearance: none; /* Fix for Safari */
+    -moz-appearance: none; /* Fix for Firefox */
+    appearance: none;
+    box-sizing: border-box; /* Ensures width and height are accurate */
 }
+
 
 
 .character {
