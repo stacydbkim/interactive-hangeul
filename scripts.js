@@ -42,25 +42,17 @@ sizeSlider.addEventListener('mouseleave', () => {
 
 // Custom Cursor Movement
 const customCursor = document.getElementById('custom-cursor');
-let cursorX = 0;
-let cursorY = 0;
-let targetX = 0;
-let targetY = 0;
 
-// Device Detection
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+// Real-time Cursor Update for Mouse
+document.addEventListener('mousemove', (event) => {
+    customCursor.style.transform = `translate3d(${event.pageX - 10}px, ${event.pageY - 10}px, 0)`;
+});
 
-// Adjust Speed Based on Device
-const speed = isMobile ? 0.1 : 0.25; // Faster on desktop, slower on mobile
-
-// Smooth Cursor Animation
-const animateCursor = () => {
-    cursorX += (targetX - cursorX) * speed;
-    cursorY += (targetY - cursorY) * speed;
-    customCursor.style.transform = `translate3d(${cursorX - 10}px, ${cursorY - 10}px, 0)`;
-    requestAnimationFrame(animateCursor);
-};
-animateCursor();
+// Real-time Cursor Update for Touch
+document.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    customCursor.style.transform = `translate3d(${touch.pageX - 10}px, ${touch.pageY - 10}px, 0)`;
+});
 
 
 // Function to create characters at the given coordinates
