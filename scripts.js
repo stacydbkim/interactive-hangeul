@@ -40,6 +40,17 @@ sizeSlider.addEventListener('mouseleave', () => {
     isOverSlider = false;
 });
 
+let isOverClearButton = false;
+
+// Detect when the cursor enters or leaves the Clear Canvas button
+clearButton.addEventListener('mouseenter', () => {
+    isOverClearButton = true;
+});
+clearButton.addEventListener('mouseleave', () => {
+    isOverClearButton = false;
+});
+
+
 // Custom Cursor Movement
 const customCursor = document.getElementById('custom-cursor');
 
@@ -74,7 +85,7 @@ const createCharacter = (x, y) => {
 
 // Mouse Move Event (Desktop)
 document.addEventListener('mousemove', (event) => {
-    if (isOverSlider) return;
+    if (isOverSlider || isOverClearButton) return;
     createCharacter(event.pageX, event.pageY);
 });
 
@@ -94,6 +105,7 @@ document.addEventListener('touchstart', (event) => {
 
 // Mobile: Touch Move (for dragging)
 document.addEventListener('touchmove', (event) => {
+    if (isOverClearButton) return;
     const touch = event.touches[0];
     const moveX = touch.pageX;
     const moveY = touch.pageY;
