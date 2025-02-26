@@ -1,0 +1,18 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+#interactive-area {
+    margin: 50px auto;
+    width: 80%;
+    height: 60vh;
+    border: 2px solid #ccc;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
