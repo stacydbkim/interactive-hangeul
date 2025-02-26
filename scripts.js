@@ -37,20 +37,15 @@ sizeSlider.addEventListener('mouseenter', () => {
     isOverSlider = true;
 });
 sizeSlider.addEventListener('mouseleave', () => {
-    isOverSlider = false);
+    isOverSlider = false;
+});
 
 // Custom Cursor Movement
 const customCursor = document.getElementById('custom-cursor');
 
-// Real-time Cursor Update for Mouse
-document.addEventListener('mousemove', (event) => {
+// Real-time Cursor Update
+document.addEventListener('pointermove', (event) => {
     customCursor.style.transform = `translate3d(${event.pageX - 10}px, ${event.pageY - 10}px, 0)`;
-});
-
-// Real-time Cursor Update for Touch
-document.addEventListener('touchmove', (event) => {
-    const touch = event.touches[0];
-    customCursor.style.transform = `translate3d(${touch.pageX - 10}px, ${touch.pageY - 10}px, 0)`;
 });
 
 // Function to create characters at the given coordinates
@@ -90,72 +85,6 @@ const createHeart = (x, y) => {
     }, 0);
 };
 
-// Function to check if touch is over the Clear Canvas button
-const isTouchOverClearButton = (touch) => {
-    const clearButtonRect = clearButton.getBoundingClientRect();
-    return (
-        touch.pageX >= clearButtonRect.left &&
-        touch.pageX <= clearButtonRect.right &&
-        touch.pageY >= clearButtonRect.top &&
-        touch.pageY <= clearButtonRect.bottom
-    );
-};
-
-// Variables to track touch position
-let startX = 0;
-let startY = 0;
-let isDragging = false;
-const tapThreshold = 10; // Maximum movement to be considered a tap
-
-// Mobile: Touch Start
-document.addEventListener('touchstart', (event) => {
-    event.preventDefault();
-    const touch = event.touches[0];
-    startX = touch.pageX;
-    startY = touch.pageY;
-    isDragging = false; // Reset dragging state
-});
-
-// Mobile: Touch Move (for dragging)
-document.addEventListener('touchmove', (event) => {
-    event.preventDefault();
-    const touch = event.touches[0];
-    if (isTouchOverClearButton(touch) || isOverSlider) return;
-
-    const moveX = touch.pageX;
-    const moveY = touch.pageY;
-
-    // Calculate the distance moved
-    const distanceX = Math.abs(moveX - startX);
-    const distanceY = Math.abs(moveY - startY);
-
-    // If the movement is significant, it's a drag
-    if (distanceX > tapThreshold || distanceY > tapThreshold) {
-        isDragging = true;
-        createCharacter(moveX, moveY);
-    }
-});
-
-// Mobile: Touch End (to detect tap)
-document.addEventListener('touchend', (event) => {
-    event.preventDefault();
-    const touch = event.changedTouches[0];
-
-    // Check if tap was over the Clear Canvas button
-    if (isTouchOverClearButton(touch)) return;
-
-    // If it wasn't a drag, it's a tap
-    if (!isDragging) {
-        createHeart(touch.pageX, touch.pageY);
-    }
-});
-
-// Mouse Move Event (Desktop)
-document.addEventListener('mousemove', (event) => {
-    if (isOverSlider || isOverClearButton) return;
-    createCharacter(event.pageX, event.pageY);
-});
-
 // Clear canvas when the red button is clicked
 const clearButton = document.getElementById('clear-canvas');
 clearButton.addEventListener('click', () => {
@@ -165,9 +94,35 @@ clearButton.addEventListener('click', () => {
 
 // Place it here!
 let isOverClearButton = false;
-clearButton.addEventListener('mouseenter', () => {
+clearButton.addEventListener('pointerenter', () => {
     isOverClearButton = true;
 });
-clearButton.addEventListener('mouseleave', () => {
+clearButton.addEventListener('pointerleave', () => {
     isOverClearButton = false;
+});
+
+// Variables to track dragging and taps
+let isDragging = false;
+
+// Handle Pointer Down (Mouse Click or Touch Start)
+document.addEventListener('pointerdown', (event) => {
+    isDragging = false;
+    if (isOverSlider || isOverClearButton) return;
+});
+
+// Handle Pointer Move (Mouse Move or Touch Move)
+document.addEventListener('pointermove', (event) => {
+    if (isOverSlider || isOverClearButton) return;
+    isDragging = true;
+    createCharacter(event.pageX, event.pageY);
+});
+
+// Handle Pointer Up (Mouse Release or Touch End)
+document.addEventListener('pointerup', (event) => {
+    if (isOverSlider || isOverClearButton) return;
+
+    // If it wasn't a drag, consider it a tap and create a heart
+    if (!isDragging) {
+        createHeart(event.pageX, event.pageY);
+    }
 });
