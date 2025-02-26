@@ -88,7 +88,7 @@ body {
 @media (max-width: 600px) {
     #control-panel {
         top: 5px;
-        left: 5px;
+        left: 10px;
         padding: 5px;
     }
 
@@ -100,6 +100,7 @@ body {
     #clear-canvas {
         width: 10px;
         height: 10px;
+        left: 10px;
     }
 
     #custom-cursor {

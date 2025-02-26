@@ -19,7 +19,7 @@ const getRandomColor = () => {
 
 // Throttle settings
 let lastDrawTime = 0;
-const delay = 0; // Adjust this value to change speed (in milliseconds)
+const delay = 50; // Adjust this value to change speed (in milliseconds)
 
 // Default font size
 let currentFontSize = 42;
@@ -108,4 +108,36 @@ const clearButton = document.getElementById('clear-canvas');
 clearButton.addEventListener('click', () => {
     const trailContainer = document.getElementById('trail-container');
     trailContainer.innerHTML = ''; // Clear all characters
+});
+
+
+
+// Function to create a heart symbol at the given coordinates
+const createHeart = (x, y) => {
+    const heartElement = document.createElement('div');
+    heartElement.classList.add('character');
+    heartElement.innerText = '❤️';
+    heartElement.style.left = `${x}px`;
+    heartElement.style.top = `${y}px`;
+    heartElement.style.fontSize = `${currentFontSize}px`;
+    heartElement.style.transform = `rotate(${Math.random() * 360 - 0}deg)`;
+    document.getElementById('trail-container').appendChild(heartElement);
+
+    // Optional: Make the heart float up a little (cute effect)
+    setTimeout(() => {
+        heartElement.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+        heartElement.style.transform += ' translateY(-20px)';
+        heartElement.style.opacity = '0.8';
+    }, 0);
+};
+
+// Desktop: Click to produce a heart
+document.addEventListener('click', (event) => {
+    createHeart(event.pageX, event.pageY);
+});
+
+// Mobile: Tap to produce a heart
+document.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    createHeart(touch.pageX, touch.pageY);
 });
