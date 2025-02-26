@@ -40,18 +40,32 @@ sizeSlider.addEventListener('mouseleave', () => {
     isOverSlider = false;
 });
 
-document.addEventListener('mousemove', (event) => {
-    // Check if the cursor is over the slider
-    if (isOverSlider) return;
+// Custom Cursor Movement
+const customCursor = document.getElementById('custom-cursor');
+let cursorX = 0;
+let cursorY = 0;
+let targetX = 0;
+let targetY = 0;
 
+// Smooth Cursor Animation
+const animateCursor = () => {
+    cursorX += (targetX - cursorX) * 0.1;
+    cursorY += (targetY - cursorY) * 0.1;
+    customCursor.style.transform = `translate3d(${cursorX - 10}px, ${cursorY - 10}px, 0)`;
+    requestAnimationFrame(animateCursor);
+};
+animateCursor();
+
+// Function to create characters at the given coordinates
+const createCharacter = (x, y) => {
     const currentTime = new Date().getTime();
     if (currentTime - lastDrawTime > delay) {
         const characterElement = document.createElement('div');
         characterElement.classList.add('character');
         characterElement.innerText = getRandomCharacter();
         characterElement.style.color = getRandomColor();
-        characterElement.style.left = `${event.pageX}px`;
-        characterElement.style.top = `${event.pageY}px`;
+        characterElement.style.left = `${x}px`;
+        characterElement.style.top = `${y}px`;
         characterElement.style.fontSize = `${currentFontSize}px`;
         characterElement.style.transform = `rotate(${Math.random() * 360}deg)`;
         document.getElementById('trail-container').appendChild(characterElement);
@@ -63,8 +77,32 @@ document.addEventListener('mousemove', (event) => {
             characterElement.style.transform = `rotate(${Math.random() * 360}deg) translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`;
         }, 1000);
     }
+};
+
+// Mouse Move Event (Desktop)
+document.addEventListener('mousemove', (event) => {
+    if (isOverSlider) return;
+    targetX = event.pageX;
+    targetY = event.pageY;
+    createCharacter(event.pageX, event.pageY);
 });
 
+// Touch Events (Mobile)
+document.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    targetX = touch.pageX;
+    targetY = touch.pageY;
+    createCharacter(touch.pageX, touch.pageY);
+});
+document.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    targetX = touch.pageX;
+    targetY = touch.pageY;
+    createCharacter(touch.pageX, touch.pageY);
+});
+document.addEventListener('touchend', () => {
+    // Optionally clear cursor or add end-of-touch animation
+});
 
 // Clear canvas when the red button is clicked
 const clearButton = document.getElementById('clear-canvas');
@@ -72,14 +110,3 @@ clearButton.addEventListener('click', () => {
     const trailContainer = document.getElementById('trail-container');
     trailContainer.innerHTML = ''; // Clear all characters
 });
-
-
-// Custom Cursor Movement
-const customCursor = document.getElementById('custom-cursor');
-
-document.addEventListener('mousemove', (event) => {
-    customCursor.style.left = `${event.pageX}px`;
-    customCursor.style.top = `${event.pageY}px`;
-});
-
-

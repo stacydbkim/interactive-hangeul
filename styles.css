@@ -76,3 +76,29 @@ body {
     transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
 }
+
+
+/* Mobile Styles */
+@media (max-width: 600px) {
+    #control-panel {
+        top: 5px;
+        left: 5px;
+        padding: 5px;
+    }
+
+    #size-slider {
+        height: 80px;
+        width: 10px;
+    }
+
+    #clear-canvas {
+        width: 10px;
+        height: 10px;
+    }
+
+    #custom-cursor {
+        width: 15px;
+        height: 15px;
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+    }
+}
