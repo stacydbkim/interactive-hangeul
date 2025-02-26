@@ -40,17 +40,6 @@ sizeSlider.addEventListener('mouseleave', () => {
     isOverSlider = false;
 });
 
-let isOverClearButton = false;
-
-// Detect when the cursor enters or leaves the Clear Canvas button
-clearButton.addEventListener('mouseenter', () => {
-    isOverClearButton = true;
-});
-clearButton.addEventListener('mouseleave', () => {
-    isOverClearButton = false;
-});
-
-
 // Custom Cursor Movement
 const customCursor = document.getElementById('custom-cursor');
 
@@ -83,12 +72,6 @@ const createCharacter = (x, y) => {
     }
 };
 
-// Mouse Move Event (Desktop)
-document.addEventListener('mousemove', (event) => {
-    if (isOverSlider || isOverClearButton) return;
-    createCharacter(event.pageX, event.pageY);
-});
-
 // Variables to track touch position
 let startX = 0;
 let startY = 0;
@@ -105,7 +88,7 @@ document.addEventListener('touchstart', (event) => {
 
 // Mobile: Touch Move (for dragging)
 document.addEventListener('touchmove', (event) => {
-    if (isOverClearButton) return;
+    if (isOverSlider || isOverClearButton) return;
     const touch = event.touches[0];
     const moveX = touch.pageX;
     const moveY = touch.pageY;
@@ -129,11 +112,26 @@ document.addEventListener('touchend', (event) => {
     }
 });
 
+// Mouse Move Event (Desktop)
+document.addEventListener('mousemove', (event) => {
+    if (isOverSlider || isOverClearButton) return;
+    createCharacter(event.pageX, event.pageY);
+});
+
 // Clear canvas when the red button is clicked
 const clearButton = document.getElementById('clear-canvas');
 clearButton.addEventListener('click', () => {
     const trailContainer = document.getElementById('trail-container');
     trailContainer.innerHTML = ''; // Clear all characters
+});
+
+// Place it here!
+let isOverClearButton = false;
+clearButton.addEventListener('mouseenter', () => {
+    isOverClearButton = true;
+});
+clearButton.addEventListener('mouseleave', () => {
+    isOverClearButton = false;
 });
 
 // Function to create a heart symbol at the given coordinates
