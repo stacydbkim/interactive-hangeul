@@ -37,8 +37,7 @@ sizeSlider.addEventListener('mouseenter', () => {
     isOverSlider = true;
 });
 sizeSlider.addEventListener('mouseleave', () => {
-    isOverSlider = false;
-});
+    isOverSlider = false);
 
 // Custom Cursor Movement
 const customCursor = document.getElementById('custom-cursor');
@@ -72,6 +71,36 @@ const createCharacter = (x, y) => {
     }
 };
 
+// Function to create a heart symbol at the given coordinates
+const createHeart = (x, y) => {
+    const heartElement = document.createElement('div');
+    heartElement.classList.add('character');
+    heartElement.innerText = '❤️';
+    heartElement.style.left = `${x}px`;
+    heartElement.style.top = `${y}px`;
+    heartElement.style.fontSize = `${currentFontSize}px`;
+    heartElement.style.transform = `rotate(${Math.random() * 360}deg)`;
+    document.getElementById('trail-container').appendChild(heartElement);
+
+    // Optional: Make the heart float up a little
+    setTimeout(() => {
+        heartElement.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+        heartElement.style.transform += ' translateY(-20px)';
+        heartElement.style.opacity = '0.8';
+    }, 0);
+};
+
+// Function to check if touch is over the Clear Canvas button
+const isTouchOverClearButton = (touch) => {
+    const clearButtonRect = clearButton.getBoundingClientRect();
+    return (
+        touch.pageX >= clearButtonRect.left &&
+        touch.pageX <= clearButtonRect.right &&
+        touch.pageY >= clearButtonRect.top &&
+        touch.pageY <= clearButtonRect.bottom
+    );
+};
+
 // Variables to track touch position
 let startX = 0;
 let startY = 0;
@@ -80,6 +109,7 @@ const tapThreshold = 10; // Maximum movement to be considered a tap
 
 // Mobile: Touch Start
 document.addEventListener('touchstart', (event) => {
+    event.preventDefault();
     const touch = event.touches[0];
     startX = touch.pageX;
     startY = touch.pageY;
@@ -88,8 +118,10 @@ document.addEventListener('touchstart', (event) => {
 
 // Mobile: Touch Move (for dragging)
 document.addEventListener('touchmove', (event) => {
-    if (isOverSlider || isOverClearButton) return;
+    event.preventDefault();
     const touch = event.touches[0];
+    if (isTouchOverClearButton(touch) || isOverSlider) return;
+
     const moveX = touch.pageX;
     const moveY = touch.pageY;
 
@@ -106,8 +138,14 @@ document.addEventListener('touchmove', (event) => {
 
 // Mobile: Touch End (to detect tap)
 document.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    const touch = event.changedTouches[0];
+
+    // Check if tap was over the Clear Canvas button
+    if (isTouchOverClearButton(touch)) return;
+
+    // If it wasn't a drag, it's a tap
     if (!isDragging) {
-        const touch = event.changedTouches[0];
         createHeart(touch.pageX, touch.pageY);
     }
 });
@@ -132,28 +170,4 @@ clearButton.addEventListener('mouseenter', () => {
 });
 clearButton.addEventListener('mouseleave', () => {
     isOverClearButton = false;
-});
-
-// Function to create a heart symbol at the given coordinates
-const createHeart = (x, y) => {
-    const heartElement = document.createElement('div');
-    heartElement.classList.add('character');
-    heartElement.innerText = '❤️';
-    heartElement.style.left = `${x}px`;
-    heartElement.style.top = `${y}px`;
-    heartElement.style.fontSize = `${currentFontSize}px`;
-    heartElement.style.transform = `rotate(${Math.random() * 360}deg)`;
-    document.getElementById('trail-container').appendChild(heartElement);
-
-    // Optional: Make the heart float up a little
-    setTimeout(() => {
-        heartElement.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
-        heartElement.style.transform += ' translateY(-20px)';
-        heartElement.style.opacity = '0.8';
-    }, 0);
-};
-
-// Desktop: Click to produce a heart
-document.addEventListener('click', (event) => {
-    createHeart(event.pageX, event.pageY);
 });
