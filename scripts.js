@@ -54,7 +54,6 @@ document.addEventListener('touchmove', (event) => {
     customCursor.style.transform = `translate3d(${touch.pageX - 10}px, ${touch.pageY - 10}px, 0)`;
 });
 
-
 // Function to create characters at the given coordinates
 const createCharacter = (x, y) => {
     const currentTime = new Date().getTime();
@@ -70,25 +69,19 @@ const createCharacter = (x, y) => {
         document.getElementById('trail-container').appendChild(characterElement);
 
         lastDrawTime = currentTime;
-
-        // Continuous Animation: Gentle floating effect
-        setInterval(() => {
-            characterElement.style.transform = `rotate(${Math.random() * 360}deg) translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`;
-        }, 1000);
     }
 };
 
 // Mouse Move Event (Desktop)
 document.addEventListener('mousemove', (event) => {
     if (isOverSlider) return;
-    targetX = event.pageX;
-    targetY = event.pageY;
     createCharacter(event.pageX, event.pageY);
 });
 
 // Variables to track touch position
 let startX = 0;
 let startY = 0;
+let isDragging = false;
 const tapThreshold = 10; // Maximum movement to be considered a tap
 
 // Mobile: Touch Start
@@ -96,6 +89,7 @@ document.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
     startX = touch.pageX;
     startY = touch.pageY;
+    isDragging = false; // Reset dragging state
 });
 
 // Mobile: Touch Move (for dragging)
@@ -108,29 +102,20 @@ document.addEventListener('touchmove', (event) => {
     const distanceX = Math.abs(moveX - startX);
     const distanceY = Math.abs(moveY - startY);
 
-    // If the movement is significant, consider it a drag
+    // If the movement is significant, it's a drag
     if (distanceX > tapThreshold || distanceY > tapThreshold) {
-        targetX = moveX;
-        targetY = moveY;
+        isDragging = true;
         createCharacter(moveX, moveY);
     }
 });
 
 // Mobile: Touch End (to detect tap)
 document.addEventListener('touchend', (event) => {
-    // Calculate the total distance moved
-    const touch = event.changedTouches[0];
-    const endX = touch.pageX;
-    const endY = touch.pageY;
-    const distanceX = Math.abs(endX - startX);
-    const distanceY = Math.abs(endY - startY);
-
-    // If the movement was small, consider it a tap
-    if (distanceX < tapThreshold && distanceY < tapThreshold) {
-        createHeart(endX, endY);
+    if (!isDragging) {
+        const touch = event.changedTouches[0];
+        createHeart(touch.pageX, touch.pageY);
     }
 });
-
 
 // Clear canvas when the red button is clicked
 const clearButton = document.getElementById('clear-canvas');
@@ -138,8 +123,6 @@ clearButton.addEventListener('click', () => {
     const trailContainer = document.getElementById('trail-container');
     trailContainer.innerHTML = ''; // Clear all characters
 });
-
-
 
 // Function to create a heart symbol at the given coordinates
 const createHeart = (x, y) => {
@@ -149,10 +132,10 @@ const createHeart = (x, y) => {
     heartElement.style.left = `${x}px`;
     heartElement.style.top = `${y}px`;
     heartElement.style.fontSize = `${currentFontSize}px`;
-    heartElement.style.transform = `rotate(${Math.random() * 360 - 0}deg)`;
+    heartElement.style.transform = `rotate(${Math.random() * 360}deg)`;
     document.getElementById('trail-container').appendChild(heartElement);
 
-    // Optional: Make the heart float up a little (cute effect)
+    // Optional: Make the heart float up a little
     setTimeout(() => {
         heartElement.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
         heartElement.style.transform += ' translateY(-20px)';
@@ -163,10 +146,4 @@ const createHeart = (x, y) => {
 // Desktop: Click to produce a heart
 document.addEventListener('click', (event) => {
     createHeart(event.pageX, event.pageY);
-});
-
-// Mobile: Tap to produce a heart
-document.addEventListener('touchstart', (event) => {
-    const touch = event.touches[0];
-    createHeart(touch.pageX, touch.pageY);
 });
