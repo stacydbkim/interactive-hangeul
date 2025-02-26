@@ -71,6 +71,7 @@ body {
     pointer-events: auto;
     display: block;
     margin-top: 15px; /* Controls the gap between slider and button */
+
 }
 
 
@@ -106,11 +107,21 @@ body {
     }
 
     /* Clear Canvas Button */
-    #clear-canvas {
-        width: 15px;
-        height: 15px;
-        margin-top: 15px; /* Space between slider and button */
-    }
+   #clear-canvas {
+    width: 20px;
+    height: 20px;
+    background: red;
+    border: none;
+    border-radius: 50%;
+    box-sizing: border-box;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 0 5px 3px rgba(255, 0, 0, 0.5);
+    pointer-events: auto;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+}
 
     /* Custom Cursor */
     #custom-cursor {
