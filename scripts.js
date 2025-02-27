@@ -66,7 +66,7 @@ const createCharacter = (x, y) => {
 
         // Add this to bring back the animation effect:
         setInterval(() => {
-            characterElement.style.transform = `rotate(${Math.random() * 360}deg) translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`;
+            characterElement.style.transform = `rotate(${Math.random() * 180}deg) translate(${Math.random() * 10 - 5}px, ${Math.random() * 20 - 10}px)`;
         }, 1500);
     }
 };
