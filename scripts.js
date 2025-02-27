@@ -1,7 +1,7 @@
 // List of Korean consonants and vowels
 const koreanCharacters = [
     'ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ', 
-    'ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ'
+    'ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ', '😂'
 ];
 
 // List of colors to choose from
@@ -63,6 +63,11 @@ const createCharacter = (x, y) => {
         document.getElementById('trail-container').appendChild(characterElement);
 
         lastDrawTime = currentTime;
+
+        // Add this to bring back the animation effect:
+        setInterval(() => {
+            characterElement.style.transform = `rotate(${Math.random() * 360}deg) translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`;
+        }, 1500);
     }
 };
 
